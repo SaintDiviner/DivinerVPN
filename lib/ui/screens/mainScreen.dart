@@ -1,15 +1,15 @@
 /*
- * Copyright (c) 2020 Mochamad Nizwar Syafuan
+ * Copyright (c) 2022 DivVPN
  * Distributed under the GNU GPL v2 with additional terms. For full terms see the file doc/LICENSE.txt
  */
 
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:open_nizvpn/core/models/dnsConfig.dart';
-import 'package:open_nizvpn/core/models/vpnConfig.dart';
-import 'package:open_nizvpn/core/models/vpnStatus.dart';
-import 'package:open_nizvpn/core/utils/nizvpn_engine.dart';
+import 'package:open_divvpn/core/models/dnsConfig.dart';
+import 'package:open_divvpn/core/models/vpnConfig.dart';
+import 'package:open_divvpn/core/models/vpnStatus.dart';
+import 'package:open_divvpn/core/utils/divvpn_engine.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 class MainScreen extends StatefulWidget {
@@ -18,7 +18,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  String _vpnState = NizVpn.vpnDisconnected;
+  String _vpnState = DivVPN.vpnDisconnected;
   List<VpnConfig> _listVpn = [];
   VpnConfig? _selectedVpn;
 
@@ -27,7 +27,7 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
 
     ///Add listener to update vpnstate
-    NizVpn.vpnStageSnapshot().listen((event) {
+    DivVPN.vpnStageSnapshot().listen((event) {
       setState(() {
         _vpnState = event;
       });
@@ -68,7 +68,7 @@ class _MainScreenState extends State<MainScreen> {
                     backgroundColor: Theme.of(context).primaryColor,
                   ),
                   child: Text(
-                    _vpnState == NizVpn.vpnDisconnected ? "Connect VPN!" : _vpnState.replaceAll("_", " ").toUpperCase(),
+                    _vpnState == DivVPN.vpnDisconnected ? "Connect VPN!" : _vpnState.replaceAll("_", " ").toUpperCase(),
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: _connectClick,
@@ -76,7 +76,7 @@ class _MainScreenState extends State<MainScreen> {
               ),
               StreamBuilder<VpnStatus?>(
                 initialData: VpnStatus(),
-                stream: NizVpn.vpnStatusSnapshot(),
+                stream: DivVPN.vpnStatusSnapshot(),
                 builder: (context, snapshot) => Text("${snapshot.data?.byteIn ?? ""}, ${snapshot.data?.byteOut ?? ""}", textAlign: TextAlign.center),
               )
             ]
@@ -94,7 +94,7 @@ class _MainScreenState extends State<MainScreen> {
                           onTap: () {
                             if (_selectedVpn == e) return;
                             log("${e.name} is selected");
-                            NizVpn.stopVpn();
+                            DivVPN.stopVpn();
                             setState(() {
                               _selectedVpn = e;
                             });
@@ -113,9 +113,9 @@ class _MainScreenState extends State<MainScreen> {
     ///Stop right here if user not select a vpn
     if (_selectedVpn == null) return;
 
-    if (_vpnState == NizVpn.vpnDisconnected) {
+    if (_vpnState == DivVPN.vpnDisconnected) {
       ///Start if stage is disconnected
-      NizVpn.startVpn(
+      DivVPN.startVpn(
         _selectedVpn!,
         dns: DnsConfig("23.253.163.53", "198.101.242.72"),
       );
