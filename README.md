@@ -1,4 +1,4 @@
-# NizVPN
+# DivVPN
 Flutter Android VPN based on OpenVPN Library.
 
 # Let's Code!
@@ -10,7 +10,7 @@ Here, i'll show you how to deal with the "connection things"
 Connect or Disconnect vpn with single line of code!
 ```dart 
     ...
-        _vpnStage = NizVpn.vpnDisconnected;
+        _vpnStage = DivVPN.vpnDisconnected;
         _selectedVpn = VpnConfig(
             config: "OVPN CONFIG IS HERE", 
             name: "Japan", 
@@ -21,12 +21,12 @@ Connect or Disconnect vpn with single line of code!
 
     ...
         if (_selectedVpn == null) return; //Stop right here if user not select a vpn
-        if (_vpnStage == NizVpn.vpnDisconnected) {
+        if (_vpnStage == DivVPN.vpnDisconnected) {
             //Start if stage is disconnected
-            NizVpn.startVpn(_selectedVpn);
+            DivVPN.startVpn(_selectedVpn);
         } else {
             //Stop if stage is "not" disconnected
-            NizVpn.stopVpn();
+            DivVPN.stopVpn();
         }
     ...
 ```
@@ -36,7 +36,7 @@ Don't forget to listen your vpn stage and status, you can simply show them with 
 ```dart
     ...
         //Add listener to update vpnStage
-        NizVpn.vpnStageSnapshot().listen((event) {
+        DivVPN.vpnStageSnapshot().listen((event) {
             setState(() {
                 _vpnStage = event; //Look at stages detail below
             });
@@ -44,7 +44,7 @@ Don't forget to listen your vpn stage and status, you can simply show them with 
     ... 
     ...
         //Add listener to update vpnStatus
-        NizVpn.vpnStatusSnapshot().listen((event){
+        DivVPN.vpnStatusSnapshot().listen((event){
             setState((){ 
                 _vpnStatus = event;
             });
