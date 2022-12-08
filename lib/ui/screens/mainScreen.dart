@@ -39,7 +39,6 @@ class _MainScreenState extends State<MainScreen> {
 
   ///Here you can start fill the listVpn, for this simple app, i'm using free vpn from https://www.vpngate.net/
   void initVpn() async {
-    _listVpn.add(VpnConfig(config: await rootBundle.loadString("assets/vpn/japan.ovpn"), name: "Japan"));
     _listVpn.add(VpnConfig(config: await rootBundle.loadString("assets/vpn/us.ovpn"), name: "United State"));
     if (mounted)
       setState(() {
